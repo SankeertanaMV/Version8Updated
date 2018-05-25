@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <item name="nestedScroll" type="id">NestedScroll</item>
+    <item name="EmailLayout" type="id">EmailLayout</item>
+    <item name="PasswordLayout" type="id">PasswordLayout</item>
+    <item name="EmailText" type="id">EmailText</item>
+    <item name="PasswordText" type="id">PasswordText</item>
+    <item name="LoginButton" type="id">LogonButton</item>
+    <item name="textViewRegister" type="id">textViewRegister</item>
+    <item name="appCompatButtonLogin" type="id">Login</item>
+    <item name="textViewLinkRegister" type="id">Register</item>
+    <item name="maintable" type="id">maintable</item>
+</resources>
