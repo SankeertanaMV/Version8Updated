@@ -27,22 +27,41 @@ public class DBHelper extends SQLiteOpenHelper {
 
      static final String COLUMN_DID = "_id";
      static final String COLUMN_MAILID = "mailId";
-     static final String COLUMN_EP1 = "ep1";
-     static final String COLUMN_EP2 = "ep2";
+     static final String COLUMN_BillEP1 = "bill_ep1";
+     static final String COLUMN_BillEP2 = "bill_ep2";
+    static final String COLUMN_BillEP3 = "bill_ep3";
+    static final String COLUMN_BillFLAT = "bill_flat";
+    static final String COLUMN_UsageEP1 = "usage_ep1";
+    static final String COLUMN_UsageEP2 = "usage_ep2";
+    static final String COLUMN_UsageEP3 = "usage_ep3";
+    static final String COLUMN_UsageFLAT = "usage_flat";
 
     private static final String COLUMN_RID = "r_id";
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_PASSWORD = "password";
+    private static final String COLUMN_Flatno = "flatno";
+    private static final String COLUMN_Address = "address";
 
 
     private String CREATE_Registerdetails_TABLE = "CREATE TABLE " + TABLE_Registerdetails + "("
-            + COLUMN_RID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_EMAIL + " TEXT,"
-            + COLUMN_NAME + " TEXT," + COLUMN_PASSWORD + " TEXT);";
+            + COLUMN_RID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_EMAIL + " TEXT,"
+            + COLUMN_NAME + " TEXT,"
+            + COLUMN_PASSWORD + " TEXT,"
+            +COLUMN_Flatno + " TEXT,"
+            + COLUMN_Address + " TEXT);";
 
     private String CREATE_Dump_TABLE = "CREATE TABLE " + TABLE_Dump + "("
             + COLUMN_DID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_MAILID + " TEXT,"
-            + COLUMN_EP1 + " TEXT," + COLUMN_EP2 + " TEXT);";
+            + COLUMN_BillEP1 + " TEXT,"
+            + COLUMN_BillEP2 + " TEXT,"
+            + COLUMN_BillEP3 + " TEXT,"
+            + COLUMN_BillFLAT + " TEXT,"
+            + COLUMN_UsageEP1 + " TEXT,"
+            + COLUMN_UsageEP2 + " TEXT,"
+            + COLUMN_UsageEP3 + " TEXT,"
+            +COLUMN_UsageFLAT + " TEXT);";
 
     private String DROP_Registerdetails_TABLE = "DROP TABLE IF EXISTS " + TABLE_Registerdetails;
     private String DROP_Dump_TABLE = "DROP TABLE IF EXISTS " + TABLE_Dump;
@@ -74,9 +93,11 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_EMAIL, registerdetails.getEmailid());
         values.put(COLUMN_NAME, registerdetails.getName());
+        values.put(COLUMN_EMAIL, registerdetails.getEmailid());
         values.put(COLUMN_PASSWORD, registerdetails.getPassword());
+        values.put(COLUMN_Flatno, registerdetails.getFlatno());
+        values.put(COLUMN_Address, registerdetails.getAddress());
 
         // Inserting Row
         db.insert(TABLE_Registerdetails, null, values);
@@ -88,30 +109,44 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_MAILID, dump.getMailId());
-        values.put(COLUMN_EP1, dump.getEp1());
-        values.put(COLUMN_EP2, dump.getEp2());
+        values.put(COLUMN_BillEP1,dump.getBill_ep1() );
+        values.put(COLUMN_BillEP2,dump.getBill_ep2());
+        values.put(COLUMN_BillEP3, dump.getBill_ep3());
+        values.put(COLUMN_BillFLAT, dump.getBill_flat());
+        values.put(COLUMN_UsageEP1, dump.getUsage_ep1());
+        values.put(COLUMN_UsageEP2, dump.getUsage_ep2());
+        values.put(COLUMN_UsageEP3, dump.getUsage_ep3());
+        values.put(COLUMN_UsageFLAT, dump.getUsage_flat());
 
         // Inserting Row
         db.insert(TABLE_Dump, null, values);
         db.close();
     }
 
-public long createDump(String mailId, String ep1, String ep2){
+public long createDump(String mailId, String billep1, String billep2, String billep3, String billflat,  String usageep1, String usageep2, String usageep3, String usageflat){
 
         ContentValues values = new ContentValues();
         SQLiteDatabase db = this.getWritableDatabase();
         values.put(COLUMN_MAILID, mailId);
-        values.put(COLUMN_EP1, ep1);
-        values.put(COLUMN_EP2, ep2);
+    values.put(COLUMN_BillEP1, billep1 );
+    values.put(COLUMN_BillEP2,billep2);
+    values.put(COLUMN_BillEP3, billep3);
+    values.put(COLUMN_BillFLAT, billflat);
+    values.put(COLUMN_UsageEP1, usageep1);
+    values.put(COLUMN_UsageEP2,usageep2);
+    values.put(COLUMN_UsageEP3, usageep3);
+    values.put(COLUMN_UsageFLAT, usageflat);
 
-        return db.insert(TABLE_Dump,null,values);
+
+    return db.insert(TABLE_Dump,null,values);
 
 }
 
 public void insertIntoDump(){
-        createDump("raj@gmail.com","10","20");
-        createDump("ravi@gmail.com","30","40");
-        createDump("remo@gmail.com","15","30");
+        createDump("raj@gmail.com","10","20","30","60","5","10","15","30");
+        createDump("ravi@gmail.com","5","5","5","15","10","10","10","30");
+        createDump("keerthi.mvsb@gmail.com","15","5","5","5","5","5","5","5");
+
 }
 
 
@@ -212,8 +247,14 @@ public boolean checkUser(String email) {
         String[] columns = {
                 COLUMN_DID,
                 COLUMN_MAILID,
-                COLUMN_EP1,
-                COLUMN_EP2
+                COLUMN_BillEP1,
+                COLUMN_BillEP2,
+                COLUMN_BillEP3,
+                COLUMN_BillFLAT,
+                COLUMN_UsageEP1,
+                COLUMN_UsageEP2,
+                COLUMN_UsageEP3,
+                COLUMN_UsageFLAT,
 
         };
         // WHERE CLAUSE
@@ -265,7 +306,17 @@ public boolean checkUser(String email) {
         SQLiteDatabase mDb = this.getReadableDatabase();
 
             Cursor mCursor = mDb.query(TABLE_Dump, new String[] {COLUMN_DID,
-                            COLUMN_MAILID, COLUMN_EP1, COLUMN_EP2,},
+
+                            COLUMN_MAILID,
+                            COLUMN_BillEP1,
+                            COLUMN_BillEP2,
+                            COLUMN_BillEP3,
+                            COLUMN_BillFLAT,
+                            COLUMN_UsageEP1,
+                            COLUMN_UsageEP2,
+                            COLUMN_UsageEP3,
+                            COLUMN_UsageFLAT,
+                            },
                     null, null, null, null, null);
 
             if (mCursor != null) {

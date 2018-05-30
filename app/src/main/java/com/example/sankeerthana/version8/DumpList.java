@@ -1,5 +1,6 @@
 package com.example.sankeerthana.version8;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.Activity;
@@ -10,10 +11,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -25,12 +28,12 @@ import java.util.List;
 public class DumpList extends AppCompatActivity {
 
     private AppCompatActivity activity = DumpList.this;
-    private AppCompatTextView textViewName;
+    private TextView textViewName;
     private List<Dump> dumpList;
     private UserAdapter userAdapter;
     private DBHelper dbHelper;
      SimpleCursorAdapter dataAdapter;
-
+private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +45,9 @@ public class DumpList extends AppCompatActivity {
     }
 
 private void initViews(){
-    textViewName = (AppCompatTextView) findViewById(R.id.textViewName);
+
+    textViewName = (TextView) findViewById(R.id.textViewName);
+    button = (Button) findViewById(R.id.button);
 }
     private void initObjects() {
 
@@ -68,15 +73,27 @@ private void initViews(){
         String[] columns = new String[]{
 
                 dbHelper.COLUMN_MAILID,
-                dbHelper.COLUMN_EP1,
-                dbHelper.COLUMN_EP2
+                dbHelper.COLUMN_BillEP1,
+                dbHelper.COLUMN_BillEP2,
+                dbHelper.COLUMN_BillEP3,
+                dbHelper.COLUMN_BillFLAT,
+                dbHelper.COLUMN_UsageEP1,
+                dbHelper.COLUMN_UsageEP2,
+                dbHelper.COLUMN_UsageEP3,
+                dbHelper.COLUMN_UsageFLAT,
 
         };
 
         int[] to = new int[]{
                 R.id.textViewMailId,
-                R.id.textViewEP1,
-                R.id.textViewEP2,
+                R.id.textViewBillEP1,
+                R.id.textViewBillEP2,
+                R.id.textViewBillEP3,
+                R.id.textViewBillFlat,
+                R.id.textViewUsageEP1,
+                R.id.textViewUsageEP2,
+                R.id.textViewUsageEP3,
+                R.id.textViewUsageFlat,
         };
 
         dataAdapter = new SimpleCursorAdapter(
@@ -100,29 +117,23 @@ private void initViews(){
             // Get the cursor, positioned to the corresponding row in the result set
             Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
-            // Get the state's capital from this row in the database.
+            // Get the users name from this row in the database.
             String userEmail =
                     cursor.getString(cursor.getColumnIndexOrThrow(dbHelper.COLUMN_MAILID));
             Toast.makeText(getApplicationContext(),
                     userEmail, Toast.LENGTH_SHORT).show();
         }
     });
-        EditText myFilter = (EditText) findViewById(R.id.myFilter);
-        myFilter.addTextChangedListener(new TextWatcher() {
 
-            public void afterTextChanged(Editable s) {
-            }
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                dataAdapter.getFilter().filter(s.toString());
+                startActivity(new Intent(DumpList.this, LoginActivity.class));
             }
         });
 
-
     }
+
+
 }

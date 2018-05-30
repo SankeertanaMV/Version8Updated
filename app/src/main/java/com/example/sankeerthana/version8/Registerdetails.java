@@ -5,6 +5,26 @@ public class Registerdetails {
    private String name;
    private String emailid;
    private String password;
+    private String flatno;
+    private String address;
+
+    public String getFlatno() {
+        return flatno;
+    }
+
+    public void setFlatno(String flatno) {
+        this.flatno = flatno;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+
 
     public int getRid() {
         return rid;
